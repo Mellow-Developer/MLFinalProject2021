@@ -1,0 +1,135 @@
+.listing_parent {
+    min-width: 100%;
+    border: solid 1px black;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.listing_image_container {
+    display: inline-flex;
+    align-items: center;
+    height: 400px;
+    width: 400px;
+}
+
+.listing_image_container img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.listing_content_container {
+    display: inline;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.listing_title {
+    display: inline;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.listing_start_price {
+    margin-top: 20px;
+}
+
+.listing_start_price p {
+    display: inline;
+}
+
+.listing_start_price strong {
+    display: inline;
+    margin-left: 20px;
+    border: solid 1px gray;
+    border-radius: 10px;
+    padding: 2px 8px;
+}
+
+.listing_description {
+    margin-top: 20px;
+}
+
+.bid_placing_container {
+    margin-top: 20px;
+}
+
+.alert_mod {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.cm_container {
+    min-width: 70%;
+    max-width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+
+    border: solid 1px black;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.cm_count{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.make_cm_container{
+    padding: 10px;
+    align-items: center;
+}
+
+.auth_error_for_comment_container{
+    display: flex;
+}
+
+.auth_error_for_comment_container div{
+    display: inline;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.cm_profile_photo{
+    width: 50px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.cm_textarea{
+    padding: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 86%;
+    max-width: 86%;
+    min-width: 40%;
+    height: 40px;
+}
+
+.existing_cm_container{
+    padding: 10px;
+    align-items: center;
+}
+
+.existing_cm_text{
+    text-justify: auto;
+    display: block;
+}
+
+.cm_user_name{
+    color: blue;
+    display: inline-block;
+}
+
+
+.card_footer {
+    max-width: 100%;
+    color: #a7a7a7;
+    background: #f3f3f3;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px;
+
+    font-size: 12px;
+    white-space: nowrap;
+}

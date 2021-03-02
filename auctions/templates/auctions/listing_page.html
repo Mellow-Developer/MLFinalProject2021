@@ -1,0 +1,220 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block title %}
+    {{ listing.title }}
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auctions/CSS/listing_page_style.css' %}">
+{% endblock %}
+
+{% block watchlist_badge %}
+    {% if user_watchlist|length != 0 %}
+        <span class="badge badge-light">{{ user_watchlist|length }}</span>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h2 class="main_title">Listing Details</h2>
+    <br>
+    <br>
+    {% if not sign_in %}
+        <div class="alert alert-danger alert-sign-mod" role="alert">
+            You need to be signed in to add items into your watchlist!
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="row listing_parent">
+            <div class="col-5 listing_image_container">
+                {% if listing.image_url %}
+                    <img src="{{ listing.image_url }}">
+                {% else %}
+                    <img src="{% static "auctions/images/nothing_to_show.png" %}">
+                {% endif %}
+            </div>
+            <div class="col-7 listing_content_container">
+
+                <p class="listing_title">{{ listing.title }}</p>
+                <form style="display: inline"
+                      action="{% url 'check_wl' listing_id=listing.id %}">
+
+                    {% if watchlist_status.added == 1 %}
+
+                        <button type="submit"
+                                class="btn btn-warning btn-sm btn-warning-mode">
+                            <img src="{% static 'auctions/icons/star-white.svg' %}">
+                        </button>
+
+                    {% else %}
+
+                        <button type="submit"
+                                class="btn btn-outline-warning btn-sm btn-warning-mode">
+                            <img src="{% static 'auctions/icons/star-outline.svg' %}">
+                        </button>
+
+                    {% endif %}
+                </form>
+
+
+                <p>{{ listing.long_title }}</p>
+
+                <div class="listing_start_price">
+                    <p>Starting Price:</p>
+                    <strong>{{ listing.starting_price }}$</strong>
+                </div>
+
+                <div class="listing_start_price">
+                    <p>Current Price:</p>
+                    <strong>{{ listing.current_price }}$</strong>
+                    <p></p>
+                </div>
+
+                <div class="listing_description">
+                    <strong>Description:</strong>
+                    {{ listing.description }}
+                </div>
+
+                <div class="bid_placing_container">
+
+                    {% if user.is_authenticated %}
+                        {% if user.id != listing.user and listing.active != False %}
+                            <strong>Place a Bid here: </strong>
+                            <form action="{% url 'change_bid' listing_id=listing.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="number" name="bid"/>
+                                <input class="btn btn-primary" type="submit" value="Submit">
+                            </form>
+                        {% else %}
+                            {% comment %}check if this auction has been closed before or not!{% endcomment %}
+                            {% if listing.active %}
+                                <form action="{% url 'close_an_auction' listing_id=listing.id %}">
+                                    <input class="btn btn-danger" type="submit" value="Close Auction">
+                                </form>
+                            {% else %}
+                                {% if who_is_here == "The Winner" %}
+                                    <div class="alert alert-success" role="alert">
+                                        <h4 class="alert-heading">You Won!</h4>
+                                        <p>Aww yeah, you've WON this Auction by
+                                            bidding {{ listing.current_price }} USD</p>
+                                        <hr>
+                                        <p class="mb-0">Please pay the amount through the payment tab.</p>
+                                    </div>
+
+                                {% else %}
+                                    <div class="alert alert-dark" role="alert">
+                                        This auction has been closed!
+                                    </div>
+                                {% endif %}
+
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        You must be signed in to place a bid.
+                        <br>
+                        <form action="{% url 'login' %}" style="display: inline">
+                            <input type="submit" class="btn btn-primary" value="Sign In">
+                        </form>
+                        or
+                        <form action="{% url 'register' %}" style="display: inline">
+                            <input type="submit" class="btn btn-dark" value="Sign Up">
+                        </form>
+                        if you haven't yet!
+
+                    {% endif %}
+
+                    <div class="#">
+                        {% if bid_status == "LessOrEqual" %}
+                            <div class="alert alert-danger alert_mod" role="alert">
+                                The bid must be higher than the current price!
+                            </div>
+                        {% elif bid_status == "200" %}
+                            <div class="alert alert-success alert_mod" role="alert">
+                                The bid successfully placed!
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="card_footer">
+                    {{ listing.date_created }}
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    {% comment %}comment section{% endcomment %}
+    {% comment %}comment section{% endcomment %}
+    {% comment %}comment section{% endcomment %}
+
+    <div class="cm_container">
+        <p class="cm_count">{{ comments|length }} Comment(s)</p>
+
+        {% comment %}new comment section{% endcomment %}
+        {% if user.is_authenticated %}
+            <strong>Write a comment about this listing here:</strong>
+            <div class="row make_cm_container">
+                <div class="col-1">
+                    <img class="cm_profile_photo" src="{% static 'auctions/images/profile.png' %}">
+                </div>
+
+                <div class="col-11">
+                    <form action="{% url 'add_comment' listing_id=listing.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" class="cm_textarea" name="comment" placeholder="Leave a comment here...">
+                        <button type="submit" class="btn btn-success">Success</button>
+                    </form>
+                </div>
+            </div>
+            <hr>
+
+        {% else %}
+            {% comment %}if the user is not logged in, have to suggest him/her to!{% endcomment %}
+            <div class="auth_error_for_comment_container">
+                <div>
+                    You must be signed in to add a comment.
+                    <br>
+                    <form action="{% url 'login' %}" style="display: inline">
+                        <input type="submit" class="btn btn-primary" value="Sign In">
+                    </form>
+                    or
+                    <form action="{% url 'register' %}" style="display: inline">
+                        <input type="submit" class="btn btn-dark" value="Sign Up">
+                    </form>
+                    if you haven't yet!
+                    <hr>
+                </div>
+            </div>
+        {% endif %}
+
+        {% comment %}existing comments{% endcomment %}
+
+        {% for comment in comments %}
+            <div class="row existing_cm_container">
+                <div class="col-1">
+                    <img class="cm_profile_photo" src="{% static 'auctions/images/profile2.png' %}">
+                </div>
+
+                <div class="col-11">
+                    <p class="cm_user_name">{{ comment.user_id }}</p> says:
+
+                    <label class="existing_cm_text">{{ comment.comment }}</label>
+
+                    <div class="card_footer">
+                        Commented on: {{ comment.cm_time }}
+                    </div>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block title %}
+    {{ listing.title }}
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auctions/CSS/closed_auctions_style.css' %}">
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h2 class="main_title">Watchlist</h2>
+    <br>
+    <br>
+
+    {% if watchlist_items %}
+        {% for listing in watchlist_items %}
+            <div class="container">
+                <div class="row listing_parent">
+                    <div class="col-2 listing_image_container">
+                        {% if listing.image_url %}
+                        <img src="{{ listing.image_url }}">
+                        {% else %}
+                        <img src="{% static "auctions/images/nothing_to_show.png" %}">
+                        {% endif %}
+                    </div>
+                    <div class="col-7 listing_content_container">
+
+                        <p class="listing_title">{{ listing.long_title }}</p>
+
+                        <div class="listing_start_price">
+                            <p>Final Price:</p>
+                            <strong>{{ listing.current_price }}$</strong>
+                        </div>
+                    </div>
+                    <div class="col-3 show_btn_container">
+                        <form class="show_form" action="{% url 'listing_page' listing_id=listing.id %}">
+                            <button type="submit" class="btn btn-outline-success">Show</button>
+                        </form>
+                    </div>
+                </div>
+                <br>
+                <br>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-warning alert_mod" role="alert">
+            You haven't add anything to your watchlist yet!
+        </div>
+    {% endif %}
+{% endblock %}

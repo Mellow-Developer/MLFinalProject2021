@@ -1,0 +1,49 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Auctions
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auctions/CSS/categories_style.css' %}"/>
+{% endblock %}
+
+{% block watchlist_badge %}
+    {% if user_watchlist|length != 0 %}
+        <span class="badge badge-light">{{ user_watchlist|length }}</span>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h2 class="main_title">Categories</h2>
+
+    <div class="container">
+        <div class="row">
+            {% for category in categories %}
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="card">
+
+                        <div class="card_image_container">
+                            <img
+                                    {% with "auctions/images/"|add:category.cat|add:".png" as cat_img %}
+                                        src="{% static cat_img %}"
+                                    {% endwith %}
+                                        alt="listing_pic">
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url "category_listings" category_name=category.id %}">
+                                <div class="title_container">
+                                    <input type="submit" class="btn btn-outline-light btn-light-mod" value="{{ category.cat }}">
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

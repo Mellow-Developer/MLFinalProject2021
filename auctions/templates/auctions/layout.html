@@ -1,0 +1,77 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" style="background: url({% block html_style %}{% endblock %}) fixed; background-size: cover;">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'auctions/CSS/styles.css' %}" rel="stylesheet">
+    {% block head %}
+    {% endblock %}
+</head>
+
+<header>
+    <nav class="navbar navbar-light navbar-mod">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="{% static 'auctions/images/auction.png' %}" width="30" height="30"
+                 class="d-inline-block align-top logo-mod" alt="" loading="lazy">
+        </a>
+        <h1 class="site_title">Auctions</h1>
+
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+            </li>
+            <li class="nav">
+                <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'new_listing' %}">New Listing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'watchlist' %}">Watchlist&nbsp;
+                        {% block watchlist_badge %}{% endblock %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'closed_auctions' %}">Closed Listings</a>
+                </li>
+                <li class="nav-item">
+                    <form action="{% url 'logout' %}" style="display: inline">
+                        <input type="submit" class="btn btn-outline-light" value="Log Out">
+                    </form>
+                </li>
+            {% endif %}
+        </ul>
+        <hr>
+
+
+        <div>
+            {% if user.is_authenticated %}
+                <span class="signed_user">
+                    Welcome back, <strong>{{ user.username }}</strong>
+                </span>
+            {% else %}
+                <form action="{% url 'login' %}" style="display: inline">
+                    <input type="submit" class="btn btn-primary" value="Sign In">
+                </form>
+
+                <form action="{% url 'register' %}" style="display: inline">
+                    <input type="submit" class="btn btn-info" value="Sign Up">
+                </form>
+            {% endif %}
+        </div>
+
+
+    </nav>
+    <br/>
+    <br/>
+</header>
+
+<body>
+{% block body %}
+{% endblock %}
+</body>
+</html>

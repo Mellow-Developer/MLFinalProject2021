@@ -1,0 +1,40 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auctions/CSS/login_style.css' %}">
+{% endblock %}
+
+{% block html_style %}
+    {% static 'auctions/images/hammer.jpg' %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="login_form">
+        <h2 class="login_title">Login</h2>
+        <br>
+        {% if message %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="Password">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Login">
+        </form>
+
+        <br>
+        <label>Don't have an account?</label> <a href="{% url 'register' %}">Register here.</a>
+    </div>
+
+
+
+{% endblock %}

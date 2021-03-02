@@ -1,0 +1,66 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Auctions
+{% endblock %}
+
+{% block watchlist_badge %}
+    {% if user_watchlist|length != 0 %}
+        <span class="badge badge-light">{{ user_watchlist|length }}</span>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <br/>
+
+    <h2 class="main_title">Active Listings</h2>
+
+    <div class="container">
+        <div class="row">
+            {% for listing in Listings %}
+                <div class="col-xl-4 col-md-6 col-sm-12">
+                    <div class="card">
+
+                        <div class="card_image_container">
+
+                            {% if listing.image_url %}
+                                <img src="{{ listing.image_url }}" alt="listing_pic">
+                            {% else %}
+                                <img src="{% static "auctions/images/nothing_to_show.png" %}" alt="listing_pic">
+                            {% endif %}
+
+                        </div>
+
+                        <div class="card-body">
+                            <div class="title_container">
+                                <h5 class="card-title">{{ listing.title }}</h5>
+                                <span class="badge badge-pill badge-info">{{ listing.cats }}</span>
+                            </div>
+
+                            <p class="card-text">{{ listing.long_title }}</p>
+
+                            <div class="bottom_container">
+                                <form class="bid_button_form" action="{% url 'listing_page' listing_id=listing.pk %}">
+                                    <input type="submit" class="btn btn-primary btn-primary-mod" value="Place a Bid">
+                                </form>
+                                <div class="current_bid_c">
+                                    <p class="current_bid">{{ listing.current_price }} $</p>
+                                </div>
+                                <div class="current_bid_label_c">
+                                    <p class="current_bid_label">Last Bid: </p>
+                                </div>
+                                <br>
+                            </div>
+
+                            <div class="card_footer">
+                                Created on: {{ listing.date_created }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
