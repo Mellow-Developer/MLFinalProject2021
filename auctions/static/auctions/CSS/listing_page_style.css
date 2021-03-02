@@ -49,10 +49,6 @@
     margin-top: 20px;
 }
 
-.bid_placing_container {
-    margin-top: 20px;
-}
-
 .alert_mod {
     margin-top: 10px;
     width: 100%;
@@ -88,12 +84,6 @@
     display: inline;
     margin-right: auto;
     margin-left: auto;
-}
-
-.cm_profile_photo{
-    width: 50px;
-    margin-top: auto;
-    margin-bottom: auto;
 }
 
 .cm_textarea{
